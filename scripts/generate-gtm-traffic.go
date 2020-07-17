@@ -13,13 +13,13 @@ import (
 
 func work() {
 	// ToDO: make the GTM property name configurable
-	ips, err := net.LookupIP("edgedns.zone.akadns.net.")
+	ips, err := net.LookupIP("mirror-failover.edgedns.zone.akadns.net.")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
 		os.Exit(1)
 	}
 	for _, ip := range ips {
-		fmt.Printf("www.jdgri.me. IN A %s\n", ip.String())
+		fmt.Printf("mirror-failover.edgedns.zone.akadns.net. IN A %s\n", ip.String())
 	}
 }
 
