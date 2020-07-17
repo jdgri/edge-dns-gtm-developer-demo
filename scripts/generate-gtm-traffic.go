@@ -12,7 +12,8 @@ import (
 )
 
 func work() {
-	ips, err := net.LookupIP("www.jdgri.me.")
+	// ToDO: make the GTM property name configurable
+	ips, err := net.LookupIP("edgedns.zone.akadns.net.")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not get IPs: %v\n", err)
 		os.Exit(1)
