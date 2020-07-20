@@ -12,17 +12,19 @@ import (
 )
 
 func handler(w http.ResponseWriter, _ *http.Request) {
-	nameItems := []string{"A", "B", "C", "D", "E", "F"}
-	bar := charts.NewBar()
-	bar.SetGlobalOptions(charts.TitleOpts{Title: "Bar"})
-	bar.AddXAxis(nameItems).
-		AddYAxis("A", []int{20, 30, 40, 10, 24, 36}).
-		AddYAxis("B", []int{35, 14, 25, 68, 44, 23})
-	f, err := os.Create("bar.html")
+	nameItems := []string{}
+	line := charts.NewLine()
+	line.SetGlobalOptions(charts.TitleOpts{Title: "DNS Requests over Time"})
+	line.AddXAxis(nameItems).
+		AddYAxis("DNS Requests", []int{20, 30, 40, 10, 24, 36},
+			charts.LabelTextOpts{Show: true},
+			charts.AreaStyleOpts{Opacity: 0.2},
+			charts.LineOpts{Smooth: true})
+	f, err := os.Create("line.html")
 	if err != nil {
 		fmt.Println(err)
 	}
-	bar.Render(w, f)
+	line.Render(w, f)
 }
 
 func main() {
