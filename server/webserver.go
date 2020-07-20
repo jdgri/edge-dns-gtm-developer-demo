@@ -91,7 +91,7 @@ func main() {
 	config, _ := edgegrid.Init("~/.edgerc", "edgednspoc")
 	fmt.Println(config)
 
-	req, _ := client.NewRequest(config, "GET", "/diagnostic-tools/v2/ghost-locations/available", nil)
+	req, _ := client.NewRequest(config, "GET", "gtm-api/v1/reports/traffic/domains/edgedns.zone.akadns.net/properties/mirror-failover?start=2020-07-18T00:00:00Z&end=2020-07-18T23:59:59Z", nil)
 	resp, _ := client.Do(config, req)
 
 	defer resp.Body.Close()
