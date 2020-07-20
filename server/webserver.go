@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"regexp"
+
+	"github.com/akamai/AkamaiOPEN-edgegrid-golang/client-v1"
+	"github.com/akamai/AkamaiOPEN-edgegrid-golang/edgegrid"
 )
 
 // Page to read and write
@@ -84,8 +86,20 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 }
 
 func main() {
+
+	// Test link to Akamai
+	config, _ := edgegrid.Init("~/.edgerc", "edgednspoc")
+	fmt.Println(config)
+
+	req, _ := client.NewRequest(config, "GET", "/diagnostic-tools/v2/ghost-locations/available", nil)
+	resp, _ := client.Do(config, req)
+
+	defer resp.Body.Close()
+	byt, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(byt))
+
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/edit/", makeHandler(editHandler))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println(http.ListenAndServe(":8080", nil))
 }
