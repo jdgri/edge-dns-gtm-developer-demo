@@ -11,12 +11,14 @@ import (
 	"github.com/go-echarts/go-echarts/charts"
 )
 
+var dataPoint []int64
+
 func handler(w http.ResponseWriter, _ *http.Request) {
 	nameItems := []string{}
 	line := charts.NewLine()
 	line.SetGlobalOptions(charts.TitleOpts{Title: "DNS Requests over Time"})
 	line.AddXAxis(nameItems).
-		AddYAxis("DNS Requests", []int{20, 30, 40, 10, 24, 36},
+		AddYAxis("DNS Requests", dataPoint,
 			charts.LabelTextOpts{Show: true},
 			charts.AreaStyleOpts{Opacity: 0.2},
 			charts.LineOpts{Smooth: true})
@@ -39,6 +41,7 @@ func main() {
 			fmt.Println("Time period: ", k)
 			fmt.Println("Time stamp: ", v.Timestamp)
 			fmt.Println("Requests: ", v.Datacenters[0].Requests)
+			dataPoint = append(dataPoint, v.Datacenters[0].Requests)
 		}
 	}
 
