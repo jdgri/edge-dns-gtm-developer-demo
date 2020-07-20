@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/akamai/AkamaiOPEN-edgegrid-golang/client-v1"
 	"github.com/akamai/AkamaiOPEN-edgegrid-golang/edgegrid"
+	reportsgtm "github.com/akamai/AkamaiOPEN-edgegrid-golang/reportsgtm-v1"
 )
 
 // Page to read and write
@@ -86,17 +86,16 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 }
 
 func main() {
-
-	// Test link to Akamai
 	config, _ := edgegrid.Init("~/.edgerc", "edgednspoc")
-	fmt.Println(config)
-
-	req, _ := client.NewRequest(config, "GET", "gtm-api/v1/reports/traffic/domains/edgedns.zone.akadns.net/properties/mirror-failover?start=2020-07-18T00:00:00Z&end=2020-07-18T23:59:59Z", nil)
-	resp, _ := client.Do(config, req)
-
-	defer resp.Body.Close()
-	byt, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(byt))
+	reportsgtm.Init(config)
+	optArgs := make(map[string]string)
+	optArgs["start"] = "2020-07-18T00:00:00Z"
+	optArgs["end"] = "2020-07-18T23:59:59Z"
+	testPropertyTraffic, err := reportsgtm.GetTrafficPerProperty("edgedns.zone.akadns.net", "mirror-failover", optArgs)
+	if err == nil {
+		requests := testPropertyTraffic.DataRows[0].Datacenters[0].Requests
+		fmt.Println(requests)
+	}
 
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/edit/", makeHandler(editHandler))
