@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/akamai/AkamaiOPEN-edgegrid-golang/edgegrid"
+	edgegrid "github.com/akamai/AkamaiOPEN-edgegrid-golang"
 	reportsgtm "github.com/akamai/AkamaiOPEN-edgegrid-golang/reportsgtm-v1"
 )
 
@@ -93,8 +93,11 @@ func main() {
 	optArgs["end"] = "2020-07-18T23:59:59Z"
 	testPropertyTraffic, err := reportsgtm.GetTrafficPerProperty("edgedns.zone.akadns.net", "mirror-failover", optArgs)
 	if err == nil {
-		requests := testPropertyTraffic.DataRows[0].Datacenters[0].Requests
-		fmt.Println(requests)
+		for k, v := range testPropertyTraffic.DataRows {
+			fmt.Println("Time period: ", k)
+			fmt.Println("Time stamp: ", v.Timestamp)
+			fmt.Println("Requests: ", v.Datacenters[0].Requests)
+		}
 	}
 
 	http.HandleFunc("/view/", makeHandler(viewHandler))
