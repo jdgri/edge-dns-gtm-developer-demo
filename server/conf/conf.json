@@ -1,1 +1,6 @@
-{"domain": "edgedns.zone.akadns.net", "property": "mirror-failover", "start": "2020-07-18T00:00:00Z", "end": "2020-07-18T23:59:59Z"}
+{
+    "domain":"edgedns.zone.akadns.net",
+    "property":"mirror-failover",
+    "start":"2020-07-18T00:00:00Z",
+    "end":"2020-07-18T23:59:59Z"
+ }
