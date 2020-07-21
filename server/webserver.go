@@ -26,6 +26,7 @@ type DemoConfig struct {
 var demoConfig DemoConfig
 
 func loadDemoConfig() {
+	// Democonfiguration
 	data, err := ioutil.ReadFile("conf/conf.json")
 	if err != nil {
 		fmt.Print(err)
@@ -33,6 +34,19 @@ func loadDemoConfig() {
 	err = json.Unmarshal(data, &demoConfig)
 	if err != nil {
 		fmt.Print(err)
+	}
+
+	// Edgegrid
+	config, _ := edgegrid.Init("~/.edgerc", "edgednspoc")
+	reportsgtm.Init(config)
+	optArgs := make(map[string]string)
+	optArgs["start"] = demoConfig.Start
+	optArgs["end"] = demoConfig.End
+	testPropertyTraffic, err := reportsgtm.GetTrafficPerProperty(demoConfig.Domain, demoConfig.Property, optArgs)
+	if err == nil {
+		for _, v := range testPropertyTraffic.DataRows {
+			dataPoint = append(dataPoint, v.Datacenters[0].Requests)
+		}
 	}
 }
 
@@ -58,22 +72,6 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	loadDemoConfig()
-
-	config, _ := edgegrid.Init("~/.edgerc", "edgednspoc")
-	reportsgtm.Init(config)
-	optArgs := make(map[string]string)
-	optArgs["start"] = "2020-07-18T00:00:00Z"
-	optArgs["end"] = "2020-07-18T23:59:59Z"
-	testPropertyTraffic, err := reportsgtm.GetTrafficPerProperty("edgedns.zone.akadns.net", "mirror-failover", optArgs)
-	if err == nil {
-		for k, v := range testPropertyTraffic.DataRows {
-			fmt.Println("Time period: ", k)
-			fmt.Println("Time stamp: ", v.Timestamp)
-			fmt.Println("Requests: ", v.Datacenters[0].Requests)
-			dataPoint = append(dataPoint, v.Datacenters[0].Requests)
-		}
-	}
-
 	http.HandleFunc("/line", handler)
 	http.HandleFunc("/", viewHandler)
 	fmt.Println(http.ListenAndServe(":8080", nil))
