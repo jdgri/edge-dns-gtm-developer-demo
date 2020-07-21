@@ -12,10 +12,41 @@
   </head>
   <body>
     <div class="text-center">
-      <h1 class="text-center">Hello, Edge DNS!</h1>
-      <a class="btn btn-primary text-center" href="/line" role="button">Show GTM DNS Requests over Time</a>
-      <button type="button" class="btn btn-primary">Another demo</button>
+      <h1>Hello, Edge DNS!</h1>
+      <br>
     </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col" align="center">
+          <a class="btn btn-primary" href="/line" role="button">Show GTM DNS Requests over Time</a>
+        </div>
+        <div class="col" align="center">
+          <button type="button" class="btn btn-primary">Another demo</button>
+        </div>
+        <div class="col py-3 px-lg-5 border bg-light">
+          3 of 3
+        </div>
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <div class="col py-3 px-lg-5 border bg-light">
+          <form>
+            <div class="form-group">
+              <label for="domainInput">GTM Domain</label>
+              <input class="form-control" id="domainInput" placeholder="GTM Domain">
+            </div>
+            <div class="form-group">
+              <label for="propertyInput">GTM Property</label>
+              <input class="form-control" id="propertyInput" placeholder="GTM Property">
+            </div>
+          </form>      
+        </div>
+        <div class="col py-3 px-lg-5 border bg-light">
+          2 of 2
+        </div>
+      </div>
+    </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
