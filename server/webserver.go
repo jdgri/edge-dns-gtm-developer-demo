@@ -29,6 +29,10 @@ func handler(w http.ResponseWriter, _ *http.Request) {
 	line.Render(w, f)
 }
 
+func viewHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, r.URL.Path[1:])
+}
+
 func main() {
 	config, _ := edgegrid.Init("~/.edgerc", "edgednspoc")
 	reportsgtm.Init(config)
@@ -46,5 +50,6 @@ func main() {
 	}
 
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/static/", viewHandler)
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }
