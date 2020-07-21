@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -12,6 +14,27 @@ import (
 )
 
 var dataPoint []int64
+
+// DemoConfig struct
+type DemoConfig struct {
+	Domain   string `json:"domain"`
+	Property string `json:"property"`
+	Start    string `json:"start"`
+	End      string `json:"end"`
+}
+
+var demoConfig DemoConfig
+
+func loadDemoConfig() {
+	data, err := ioutil.ReadFile("conf/conf.json")
+	if err != nil {
+		fmt.Print(err)
+	}
+	err = json.Unmarshal(data, &demoConfig)
+	if err != nil {
+		fmt.Print(err)
+	}
+}
 
 func handler(w http.ResponseWriter, _ *http.Request) {
 	nameItems := []string{}
@@ -34,6 +57,8 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	loadDemoConfig()
+
 	config, _ := edgegrid.Init("~/.edgerc", "edgednspoc")
 	reportsgtm.Init(config)
 	optArgs := make(map[string]string)
