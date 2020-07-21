@@ -30,7 +30,7 @@ func handler(w http.ResponseWriter, _ *http.Request) {
 }
 
 func viewHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, r.URL.Path[1:])
+	http.ServeFile(w, r, "static/index.html")
 }
 
 func main() {
@@ -49,7 +49,7 @@ func main() {
 		}
 	}
 
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/static/", viewHandler)
+	http.HandleFunc("/line", handler)
+	http.HandleFunc("/", viewHandler)
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }
