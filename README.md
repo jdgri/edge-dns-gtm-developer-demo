@@ -3,7 +3,7 @@ This toolset will demo Edge DNS and GTM capabilities and provide a template for 
 
 ## Dependencies
 
-* Go environment for Linux or Apple macOS
+* [Go environment for Linux or Apple macOS](https://golang.org/doc/install)
 * [Akamai Edgegrid for Golang](https://github.com/akamai/AkamaiOPEN-edgegrid-golang)
 * [echarts](https://github.com/go-echarts/go-echarts)
 
