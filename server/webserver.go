@@ -50,7 +50,11 @@ func loadDemoConfig() {
 	}
 }
 
-func handler(w http.ResponseWriter, _ *http.Request) {
+func digHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "static/dig.html")
+}
+
+func lineHandler(w http.ResponseWriter, _ *http.Request) {
 	nameItems := []string{}
 	line := charts.NewLine()
 	line.SetGlobalOptions(charts.TitleOpts{Title: "DNS Requests over Time"})
@@ -72,7 +76,8 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	loadDemoConfig()
-	http.HandleFunc("/line", handler)
 	http.HandleFunc("/", viewHandler)
+	http.HandleFunc("/dig", digHandler)
+	http.HandleFunc("/line", lineHandler)
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }
