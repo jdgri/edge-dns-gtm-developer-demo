@@ -11,10 +11,10 @@ Dig
 <div class="container">
   <div class="row justify-content-center">
     <div class="col py-3 px-lg-5 border bg-light">
-        <form>
+        <form method="POST">
             <div class="form-group">
-                <label for="locationId">Location</label>
-                <select class="form-control" id="locationId">
+                <label for="location">Location</label>
+                <select class="form-control" name="location">
                 <option>Boston</option>
                 <option>Los Angeles</option>
                 <option>London</option>
@@ -24,7 +24,7 @@ Dig
             </div>
             <div class="form-group">
                 <label for="hostname">Hostname</label>
-                <input class="form-control" id="hostname" placeholder="Enter hostname">
+                <input class="form-control" name="hostname" placeholder="Enter hostname">
             </div> 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -32,24 +32,7 @@ Dig
   </div>
   <div class="row">
     <pre><code>
-    {
-        "digInfo": {
-        "hostname": "www.jdgri.me",
-        "queryType": "A",
-        "answerSection": [
-            {
-                "domain": "www.jdgri.me.",
-                "ttl": 300,
-                "recordClass": "IN",
-                "recordType": "A",
-                "preferenceValue": null,
-                "value": "18.234.24.238"
-            }
-            ],
-            "authoritySection": null,
-            "result": "\n; <<>> DiG 9.10.3-P4-Ubuntu <<>> www.jdgri.me -t A\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35787\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 4096\n;; QUESTION SECTION:\n;www.jdgri.me.\t\t\tIN\tA\n\n;; ANSWER SECTION:\nwww.jdgri.me.\t\t300\tIN\tA\t18.234.24.238\n\n;; Query time: 10 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1)\n;; WHEN: Tue Jul 21 17:53:01 UTC 2020\n;; MSG SIZE  rcvd: 57\n\n"
-        }
-    }
+      {{.Body}}
     </code></pre>
   </div>
 </div>

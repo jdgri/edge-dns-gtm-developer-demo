@@ -26,15 +26,21 @@ type DemoConfig struct {
 
 var demoConfig DemoConfig
 
-// ContactDetails for forms first step
-type ContactDetails struct {
-	Email   string
-	Subject string
-	Message string
+// QueryDetails for dig request
+type QueryDetails struct {
+	Location string
+	Hostname string
 }
 
 // Page for templates
 type Page struct {
+	Title   string
+	Body    string
+	Success bool
+}
+
+// Response from APIs
+type Response struct {
 	Title   string
 	Body    string
 	Success bool
@@ -77,7 +83,21 @@ func loadDemoConfig() {
 func digHandler(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("static/base.html", "static/dig.html")
 	p, _ := loadPage("dig")
-	t.Execute(w, p)
+
+	if r.Method != http.MethodPost {
+		t.Execute(w, p)
+		return
+	}
+
+	queryDetails := QueryDetails{
+		Location: r.FormValue("location"),
+		Hostname: r.FormValue("hostname"),
+	}
+	fmt.Println(queryDetails)
+	response := Response{Title: "dig", Body: queryDetails.Location, Success: true}
+	_ = response
+
+	t.Execute(w, response)
 }
 
 func lineHandler(w http.ResponseWriter, _ *http.Request) {
@@ -89,7 +109,7 @@ func lineHandler(w http.ResponseWriter, _ *http.Request) {
 			charts.LabelTextOpts{Show: true},
 			charts.AreaStyleOpts{Opacity: 0.2},
 			charts.LineOpts{Smooth: true})
-	f, err := os.Create("line.html")
+	f, err := os.Create("static/dnshits.html")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -105,28 +125,6 @@ func main() {
 	loadDemoConfig()
 	http.HandleFunc("/", viewHandler)
 	http.HandleFunc("/dig", digHandler)
-	http.HandleFunc("/line", lineHandler)
-
-	//Forms first step
-	tmpl := template.Must(template.ParseFiles("static/forms.html"))
-	http.HandleFunc("/forms", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			tmpl.Execute(w, nil)
-			return
-		}
-
-		details := ContactDetails{
-			Email:   r.FormValue("email"),
-			Subject: r.FormValue("subject"),
-			Message: r.FormValue("message"),
-		}
-
-		// do something with details
-		_ = details
-		fmt.Println(details)
-
-		tmpl.Execute(w, struct{ Success bool }{true})
-	})
-
+	http.HandleFunc("/dnshits", lineHandler)
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }
