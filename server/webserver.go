@@ -24,6 +24,8 @@ type DemoConfig struct {
 	End      string `json:"end"`
 }
 
+var demoConfig DemoConfig
+
 // ContactDetails for forms first step
 type ContactDetails struct {
 	Email   string
@@ -31,7 +33,21 @@ type ContactDetails struct {
 	Message string
 }
 
-var demoConfig DemoConfig
+// Page for templates
+type Page struct {
+	Title   string
+	Body    string
+	Success bool
+}
+
+func loadPage(title string) (*Page, error) {
+	filename := "static/" + title + ".txt"
+	body, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	return &Page{Title: title, Body: string(body), Success: true}, nil
+}
 
 func loadDemoConfig() {
 	// Democonfiguration
@@ -59,7 +75,9 @@ func loadDemoConfig() {
 }
 
 func digHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "static/dig.html")
+	t, _ := template.ParseFiles("static/dig.html")
+	p, _ := loadPage("dig")
+	t.Execute(w, p)
 }
 
 func lineHandler(w http.ResponseWriter, _ *http.Request) {
@@ -79,7 +97,8 @@ func lineHandler(w http.ResponseWriter, _ *http.Request) {
 }
 
 func viewHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "static/index.html")
+	indexTemplate := template.Must(template.ParseFiles("static/index.html"))
+	indexTemplate.Execute(w, nil)
 }
 
 func main() {
