@@ -1,72 +1,56 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-    <title>Dig from a Location in the World</title>
-  </head>
-  <body>
-    <div class="text-center">
-      <h1>Hello, Dig!</h1>
-      <h1>{{.Title}}</h1>
-      <h2>{{.Body}} {{if .Success}}A{{else}}B{{end}}</h2>
-      <br>
+{{define "title"}}
+Dig
+{{end}}
+{{define "content"}}
+<div class="text-center">
+  <h1>Hello, Dig!</h1>
+  <h1>{{.Title}}</h1>
+  <h2>{{.Body}} {{if .Success}}A{{else}}B{{end}}</h2>
+  <br>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col py-3 px-lg-5 border bg-light">
+        <form>
+            <div class="form-group">
+                <label for="locationId">Location</label>
+                <select class="form-control" id="locationId">
+                <option>Boston</option>
+                <option>Los Angeles</option>
+                <option>London</option>
+                <option>Tokyo</option>
+                <option>Sydney</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="hostname">Hostname</label>
+                <input class="form-control" id="hostname" placeholder="Enter hostname">
+            </div> 
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col py-3 px-lg-5 border bg-light">
-            <form>
-                <div class="form-group">
-                    <label for="locationId">Location</label>
-                    <select class="form-control" id="locationId">
-                    <option>Boston</option>
-                    <option>Los Angeles</option>
-                    <option>London</option>
-                    <option>Tokyo</option>
-                    <option>Sydney</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="hostname">Hostname</label>
-                    <input class="form-control" id="hostname" placeholder="Enter hostname">
-                </div> 
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-      </div>
-      <div class="row">
-        <pre><code>
-        {
-            "digInfo": {
-            "hostname": "www.jdgri.me",
-            "queryType": "A",
-            "answerSection": [
-                {
-                    "domain": "www.jdgri.me.",
-                    "ttl": 300,
-                    "recordClass": "IN",
-                    "recordType": "A",
-                    "preferenceValue": null,
-                    "value": "18.234.24.238"
-                }
-                ],
-                "authoritySection": null,
-                "result": "\n; <<>> DiG 9.10.3-P4-Ubuntu <<>> www.jdgri.me -t A\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35787\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 4096\n;; QUESTION SECTION:\n;www.jdgri.me.\t\t\tIN\tA\n\n;; ANSWER SECTION:\nwww.jdgri.me.\t\t300\tIN\tA\t18.234.24.238\n\n;; Query time: 10 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1)\n;; WHEN: Tue Jul 21 17:53:01 UTC 2020\n;; MSG SIZE  rcvd: 57\n\n"
+  </div>
+  <div class="row">
+    <pre><code>
+    {
+        "digInfo": {
+        "hostname": "www.jdgri.me",
+        "queryType": "A",
+        "answerSection": [
+            {
+                "domain": "www.jdgri.me.",
+                "ttl": 300,
+                "recordClass": "IN",
+                "recordType": "A",
+                "preferenceValue": null,
+                "value": "18.234.24.238"
             }
+            ],
+            "authoritySection": null,
+            "result": "\n; <<>> DiG 9.10.3-P4-Ubuntu <<>> www.jdgri.me -t A\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35787\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 4096\n;; QUESTION SECTION:\n;www.jdgri.me.\t\t\tIN\tA\n\n;; ANSWER SECTION:\nwww.jdgri.me.\t\t300\tIN\tA\t18.234.24.238\n\n;; Query time: 10 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1)\n;; WHEN: Tue Jul 21 17:53:01 UTC 2020\n;; MSG SIZE  rcvd: 57\n\n"
         }
-        </code></pre>
-      </div>
-    </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-  </body>
-</html>
+    }
+    </code></pre>
+  </div>
+</div>
+{{end}}
