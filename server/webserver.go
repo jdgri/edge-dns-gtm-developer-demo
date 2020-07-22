@@ -96,16 +96,6 @@ func lineHandler(w http.ResponseWriter, _ *http.Request) {
 	line.Render(w, f)
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("static/base.html", "static/home.html"))
-	t.Execute(w, nil)
-}
-
-func aboutHandler(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("static/base.html", "static/about.html"))
-	t.Execute(w, nil)
-}
-
 func viewHandler(w http.ResponseWriter, r *http.Request) {
 	indexTemplate := template.Must(template.ParseFiles("static/index.html"))
 	indexTemplate.Execute(w, nil)
@@ -116,8 +106,6 @@ func main() {
 	http.HandleFunc("/", viewHandler)
 	http.HandleFunc("/dig", digHandler)
 	http.HandleFunc("/line", lineHandler)
-	http.HandleFunc("/home", homeHandler)
-	http.HandleFunc("/about", aboutHandler)
 
 	//Forms first step
 	tmpl := template.Must(template.ParseFiles("static/forms.html"))
