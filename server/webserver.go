@@ -168,10 +168,22 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 	indexTemplate.Execute(w, alert)
 }
 
+func demoHandler(w http.ResponseWriter, r *http.Request) {
+	indexTemplate := template.Must(template.ParseFiles("static/base.html", "static/demo.html"))
+	p, _ := loadPage("demo")
+
+	for _, v := range r.URL.Query() {
+		p.Data = p.Data + "\n" + v[0]
+	}
+
+	indexTemplate.Execute(w, p)
+}
+
 func main() {
 	loadDemoConfig()
 	http.HandleFunc("/", viewHandler)
 	http.HandleFunc("/dig", digHandler)
 	http.HandleFunc("/dnshits", dnshitsHandler)
+	http.HandleFunc("/demo", demoHandler)
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }
