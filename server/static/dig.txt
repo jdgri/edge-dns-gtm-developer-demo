@@ -1,1 +1,1 @@
-<i>Hello dig body</i>
+<a href="https://developer.akamai.com/api/core_features/diagnostic_tools/v2.html#getghostdig" target="_blank">Akamai Diagnostics API Run dig from a Ghost Location</a>

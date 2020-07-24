@@ -37,11 +37,18 @@ type QueryDetails struct {
 
 // Page for templates
 type Page struct {
-	Title   string
-	Body    string
-	Success bool
-	Message string
-	Display bool
+	Title      string
+	Body       string
+	Success    bool
+	Message    string
+	Display    bool
+	Data       string
+	Hostname   string
+	Newyork    bool
+	Losangeles bool
+	London     bool
+	Tokyo      bool
+	Sydney     bool
 }
 
 // Alert for user feedback
@@ -58,7 +65,8 @@ func loadPage(title string) (*Page, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Page{Title: title, Body: string(body), Success: true, Message: "message", Display: true}, nil
+	return &Page{Title: title, Body: string(body), Success: true, Message: "message", Display: true, Data: "",
+		Hostname: "jdgri.me", Newyork: true, Losangeles: false, London: false, Tokyo: false, Sydney: false}, nil
 }
 
 func loadDemoConfig() {
@@ -78,11 +86,32 @@ func loadDemoConfig() {
 	egConfig.Debug = true
 }
 
+func setLocationSelected(p *Page, location string) {
+	p.Newyork = false
+	p.Losangeles = false
+	p.London = false
+	p.Tokyo = false
+	p.Sydney = false
+	if location == "newyork-ny-unitedstates" {
+		p.Newyork = true
+	} else if location == "losangeles-ca-unitedstates" {
+		p.Losangeles = true
+	} else if location == "london-en-unitedkingdom" {
+		p.London = true
+	} else if location == "tokyo-13-japan" {
+		p.Tokyo = true
+	} else if location == "sydney-nsw-australia" {
+		p.Sydney = true
+	}
+}
+
 func digHandler(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("static/base.html", "static/dig.html")
 	p, _ := loadPage("dig")
 
 	if r.Method != http.MethodPost {
+		p.Display = false
+		p.Hostname = "akamai.com"
 		t.Execute(w, p)
 		return
 	}
@@ -98,7 +127,12 @@ func digHandler(w http.ResponseWriter, r *http.Request) {
 		p.Message = "Diagnostics Dig Error"
 		t.Execute(w, p)
 	} else {
-		p.Message = digInfo.DigInfo.Hostname
+		for _, s := range digInfo.DigInfo.AnswerSection {
+			p.Data = p.Data + "\n" + s.Value
+		}
+		p.Display = false
+		p.Hostname = queryDetails.Hostname
+		setLocationSelected(p, queryDetails.Location)
 		t.Execute(w, p)
 	}
 }

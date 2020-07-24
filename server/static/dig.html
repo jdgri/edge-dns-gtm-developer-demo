@@ -2,7 +2,7 @@
 Dig
 {{end}}
 {{define "content"}}
-{{if .Success}}
+{{if .Display}}
 <div class="alert alert-primary alert-dismissible fade show" role="alert">
   <strong>{{.Message}}</strong>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -11,10 +11,7 @@ Dig
 </div>
 {{end}}
 <div class="text-center">
-  <h1>Hello, Dig!</h1>
-  <h1>{{.Title}}</h1>
-  <h2>{{.Body}} {{if .Success}}A{{else}}B{{end}}</h2>
-  <br>
+  <h2 class="p-3">{{.Body}}</h2>
 </div>
 <div class="container">
   <div class="row justify-content-center">
@@ -23,19 +20,39 @@ Dig
             <div class="form-group">
                 <label for="location">Location</label>
                 <select class="form-control" name="location" required>
+                {{if .Newyork}}
+                <option selected>newyork-ny-unitedstates</option>
+                {{else}}
                 <option>newyork-ny-unitedstates</option>
+                {{end}}
+                {{if .Losangeles}}
+                <option selected>losangeles-ca-unitedstates</option>
+                {{else}}
                 <option>losangeles-ca-unitedstates</option>
+                {{end}}
+                {{if .London}}
+                <option Selected>london-en-unitedkingdom</option>
+                {{else}}
                 <option>london-en-unitedkingdom</option>
+                {{end}}
+                {{if .Tokyo}}
+                <option selected>tokyo-13-japan</option>
+                {{else}}
                 <option>tokyo-13-japan</option>
+                {{end}}
+                {{if .Sydney}}
+                <option selected>sydney-nsw-australia</option>
+                {{else}}
                 <option>sydney-nsw-australia</option>
-                </select>
+                {{end}}
+              </select>
                 <div class="valid-feedback">
                   Looks good!
                 </div>
             </div>
             <div class="form-group">
                 <label for="hostname">Hostname</label>
-                <input class="form-control" name="hostname" placeholder="Enter hostname" value="jdgri.me" required>
+                <input class="form-control" name="hostname" placeholder="Enter hostname" value={{printf "%s" .Hostname}} required>
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -44,10 +61,8 @@ Dig
         </form>
     </div>
   </div>
-  <div class="row">
-    <pre><code>
-      {{.Body}}
-    </code></pre>
+  <div class="row mt-3">
+    <pre><code>;; ANSWER SECTION: {{.Data}}</code></pre>
   </div>
 </div>
 {{end}}
